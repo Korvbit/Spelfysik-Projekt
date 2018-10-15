@@ -1,18 +1,24 @@
-#include <iostream>
-
-using namespace std;
+#include <SFML\Graphics.hpp>
 
 int main()
 {
-	cout << "Yellow world!" << endl;
+	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	sf::CircleShape shape(100.f);
+	shape.setFillColor(sf::Color::Green);
 
-	while (true)
+	while (window.isOpen())
 	{
-		// Game loop
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+
+		window.clear();
+		window.draw(shape);
+		window.display();
 	}
 
-
-
-	system("PAUSE");
 	return 0;
 }
