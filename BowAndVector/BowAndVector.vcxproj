@@ -123,15 +123,13 @@
   <ItemGroup>
 
     <ClCompile Include="Bow.cpp" />
+    
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+
     <ClInclude Include="Bow.h" />
 
     <ClCompile Include="Arrow.cpp" />
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+
     <ClInclude Include="Arrow.h" />
 
   </ItemGroup>
