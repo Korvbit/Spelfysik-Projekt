@@ -1,8 +1,10 @@
 #include <SFML\Graphics.hpp>
 
+const int W_WIDTH = 800, W_HEIGHT = 600;
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "BowAndVector!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 
