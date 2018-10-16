@@ -17,7 +17,7 @@ Arrow::~Arrow()
 
 float Arrow::update()
 {
-	// Calculate position: Grab data from Bow and World
+	//<!--- Calculate position: Grab data from Bow and World --->
 
 	return this->position;
 }
