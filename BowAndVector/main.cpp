@@ -1,6 +1,6 @@
 #include <SFML\Graphics.hpp>
 
-const int W_WIDTH = 800, W_HEIGHT = 600;
+
 
 int main()
 {

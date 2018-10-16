@@ -1,25 +1,29 @@
 #pragma once
 
 #include <string>
+#include <SFML\Graphics.hpp>
 
 
 struct Object
 {
-	float pos;
+	sf::Vector2f pos;
 	std::string type;
-	//<!--- hitbox --->
+	sf::RectangleShape hitbox;
+	sf::Texture texture;
 };
 
 class World
 {
 public:
 	World();
-	virtual ~World(); \
+	virtual ~World();
 
 	bool collisionCheck(int objIndex_1, int objIndex_2);
 
 private:
-	struct Object objectList[256]; //<!--- Dynamisk- eller Statisk allokering? --->
-	int targetIndex;
+	sf::RenderWindow window;
+
+	struct Object objectList[256];
+	int nrOfObjects;
 };
 
