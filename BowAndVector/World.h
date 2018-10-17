@@ -20,6 +20,7 @@ public:
 	virtual ~World();
 	void drawObjects();
 	sf::Vector2i mouse;
+	bool Button1;
 	bool collisionCheck(int objIndex_1, int objIndex_2);
 
 private:
@@ -28,6 +29,7 @@ private:
 	int nrOfObjects;
 
 	void mouseAim(int index);
+	void mouseBtn1();
 	void addObject(sf::Vector2f pos, sf::Vector2f size);
 	void render(sf::Drawable &drawable); //Calls draw()
 };

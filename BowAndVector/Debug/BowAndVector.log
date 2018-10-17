@@ -1,5 +1,4 @@
-﻿  main.cpp
-  World.cpp
-c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(49): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
+﻿  World.cpp
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(59): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(63): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   BowAndVector.vcxproj -> C:\Users\same8\Documents\GitHub\Spelfysik-Projekt\BowAndVector\Debug\BowAndVector.exe
