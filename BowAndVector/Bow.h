@@ -6,22 +6,27 @@ class Bow
 {
 public:
 
-	float getBow();
-	float getEffect();
+	float getBowFactor();
+	float getEfficiency();
 	float getMass();
-	float getDraw();
+	float getKraftigBoge();
+	sf::Vector2f getPos();
 
-	Bow(float bowFactor, float effectFactor, float mass, float drawBack, sf::Texture bowSprite);
+	void setRot(float rotation);
+
+	Bow(sf::Vector2f pos, sf::RectangleShape hitbox, sf::Texture bowSprite, float bowFactor = 1, float effectFactor = 1, float kraftigBoge = 1, float mass = 1);
 	virtual ~Bow();
 
 private:
 
+	sf::RectangleShape hitbox;
 	sf::Texture bowSprite;
 
+	sf::Vector2f pos;
+	float kraftigBoge;
 	float bowFactor;
-	float effectFactor;
+	float efficiency;
 	float mass;
-	float drawBack;
 
 };
 

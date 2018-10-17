@@ -5,15 +5,18 @@
 class Arrow
 {
 public:
-	Arrow(float position, float mass, float C, sf::Texture arrowSprite);
+	Arrow(sf::Vector2f position, sf::RectangleShape hitbox, sf::Texture arrowSprite, float mass = 1, float C = 1, float length = 2);
 	virtual ~Arrow();
 
-	float update();
+	void update(bool launch, float Fx, float efficiency, float bowFactor, float bowMass);
 private:
 	sf::Texture arrowSprite;
 
-	float position;
+	sf::Vector2f position;
 	float mass;
 	float C;
+	float length;
+	sf::RectangleShape hitbox;
+	float velocity;
+	sf::Vector2f direction;
 };
-

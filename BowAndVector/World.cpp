@@ -1,8 +1,8 @@
 #include "World.h"
 
 
-World::World(sf::RenderWindow &window)
-	: gameWindow(window)
+World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::Texture arrowSprite, sf::Texture bowSprite)
+	: gameWindow(window), arrow(BApos, arrowHB, arrowSprite), bow(BApos, bowHB, bowSprite)
 {
 	this->nrOfObjects = 0;
 	this->Button1 = false;
@@ -27,12 +27,20 @@ void World::drawObjects()
 
 	if (this->Button1 == false)
 	{
-		mouseBtn1(); //true if button has been pressed
 		mouseAim(1);
+		mouseBtn1(); // true if button has been pressed
+	}
+	else
+	{							
+		this->arrow.update(	this->Button1,
+							this->bow.getKraftigBoge(),
+							this->bow.getEfficiency(),
+							this->bow.getBowFactor(),
+							this->bow.getMass());
 	}
 
 	for (int i = 0; i < this->nrOfObjects; i++)
-	this->render(this->objectList[i].hitbox);  //<!--- TODO: hitbox <= sprite
+		this->render(this->objectList[i].hitbox);  //<!--- TODO: hitbox <= sprite
 
 	this->gameWindow.display();
 }
@@ -44,25 +52,19 @@ void World::render(sf::Drawable &drawable)
 
 void World::mouseAim(int index)
 {
-	{
-		this->gameWindow.mapPixelToCoords(this->mouse);
+	this->gameWindow.mapPixelToCoords(this->mouse);
 	
-		//gets obj origin coordinates and mouse coordinates
-		sf::Vector2f(objPos) = this->objectList[index].pos;
-		sf::Vector2i flip;
-		flip = sf::Mouse::getPosition(this->gameWindow);
-		this->mouse.x = flip.x;
-		this->mouse.y = -(flip.y - W_HEIGHT);
+	//gets obj origin coordinates and mouse coordinates
+	sf::Vector2f(objPos) = this->bow.getPos();
+	this->mouse = sf::Mouse::getPosition(this->gameWindow);
 		
-		printf("Pos: %d , %d \n",mouse.x, mouse.y);
+	printf("Pos: %d , %d \n",mouse.x, mouse.y);
 
-		float mouseAngle = -atan2(mouse.x - objPos.x, mouse.y - objPos.y) * 180 / 3.14159; //angle in degrees of rotation
+	float mouseAngle = -atan2(mouse.x - objPos.x, mouse.y - objPos.y) * 180 / 3.14159; //angle in degrees of rotation
 
-		printf("Angle: %f \n", fmod(mouseAngle, 360));
+	printf("Angelel: %f \n", fmod(mouseAngle, 360));
 
-		this->objectList[index].hitbox.setRotation(fmod(mouseAngle, 360));
-		
-	}
+	this->bow.setRot(fmod(mouseAngle, 360));
 }
 
 void World::mouseBtn1()
@@ -87,7 +89,7 @@ void World::addObject(sf::Vector2f pos, sf::Vector2f size) //TODO: Add Texture t
 	this->objectList[this->nrOfObjects++] = obj;
 }
 
-bool World::collisionCheck(int objIndex_1, int objIndex_2)
+bool World::collisionCheck(int arrow, int objIndex_2)
 {
 	/* <!---
 
@@ -99,6 +101,7 @@ bool World::collisionCheck(int objIndex_1, int objIndex_2)
 	else:
 
 	---> */
+
 
 	return false;
 }

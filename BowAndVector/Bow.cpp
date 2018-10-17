@@ -1,14 +1,14 @@
 #include "Bow.h"
 
 
-float Bow::getBow()
+float Bow::getBowFactor()
 {
 	return this->bowFactor;
 }
 
-float Bow::getEffect()
+float Bow::getEfficiency()
 {
-	return this->effectFactor;
+	return this->efficiency;
 }
 
 float Bow::getMass()
@@ -16,18 +16,30 @@ float Bow::getMass()
 	return this->mass;
 }
 
-float Bow::getDraw()
+float Bow::getKraftigBoge()
 {
-	return this->drawBack;
+	return this->kraftigBoge;
 }
 
-Bow::Bow(float bowFactor, float effectFactor, float mass, float drawBack, sf::Texture bowSprite)
+sf::Vector2f Bow::getPos()
 {
+	return this->pos;
+}
+
+void Bow::setRot(float rotation)
+{
+	this->hitbox.setRotation(rotation);
+}
+
+Bow::Bow(sf::Vector2f pos, sf::RectangleShape hitbox, sf::Texture bowSprite, float bowFactor, float effectFactor, float kraftigBoge, float mass)
+{
+	this->hitbox = hitbox;
 	this->bowFactor = bowFactor;
-	this->effectFactor = effectFactor;
+	this->efficiency = effectFactor;
 	this->mass = mass;
-	this->drawBack = drawBack;
 	this->bowSprite = bowSprite;
+	this->kraftigBoge = kraftigBoge;
+	this->pos = pos;
 }
 
 Bow::~Bow()

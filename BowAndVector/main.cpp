@@ -6,6 +6,9 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "BowAndVector");
 
 	World world(window); //Overloaded constructor
+	//TODO:	Write initiation for Arrow and Bow
+	//		Render Arrow and Bow
+	//		
 
 	while (window.isOpen())
 	{
