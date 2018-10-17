@@ -5,7 +5,7 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "BowAndVector");
 
-	World myWorld(window); //Overloaded constructor
+	World world(window); //Overloaded constructor
 
 	while (window.isOpen())
 	{
@@ -16,7 +16,7 @@ int main()
 				window.close();
 		}
 
-		myWorld.drawObject(0);
+		world.drawObjects();
 	}
 
 	return 0;

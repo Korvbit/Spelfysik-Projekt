@@ -18,8 +18,8 @@ class World
 public:
 	World(sf::RenderWindow &window);
 	virtual ~World();
-	void drawObject(int index);
-	
+	void drawObjects();
+	sf::Vector2i mouse;
 	bool collisionCheck(int objIndex_1, int objIndex_2);
 
 private:
@@ -27,6 +27,8 @@ private:
 	struct Object objectList[256];
 	int nrOfObjects;
 
+	void mouseAim(int index);
+	void addObject(sf::Vector2f pos, sf::Vector2f size);
 	void render(sf::Drawable &drawable); //Calls draw()
 };
 
