@@ -4,8 +4,9 @@
 #include "Arrow.h"
 #include "Bow.h"
 #include <SFML\Graphics.hpp>
+#include <cmath>
 
-const int W_WIDTH = 800, W_HEIGHT = 600;
+const int W_WIDTH = 1280, W_HEIGHT = 720;
 
 struct Object
 {
@@ -27,10 +28,14 @@ public:
 
 private:
 	sf::RenderWindow &gameWindow;
+	sf::Texture arrowSprite;
+	sf::Texture bowSprite;
 	struct Object objectList[256];
 	int nrOfObjects;
 	Arrow arrow;
 	Bow bow;
+	bool loaded;
+	bool repulsion;
 
 	void mouseAim(int index);
 	void mouseBtn1();

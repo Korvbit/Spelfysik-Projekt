@@ -26,14 +26,19 @@ sf::Vector2f Bow::getPos()
 	return this->hitbox.getPosition();
 }
 
-sf::RectangleShape Bow::getHB()
+sf::RectangleShape* Bow::getHB()
 {
-	return this->hitbox;
+	return &this->hitbox;
 }
 
 void Bow::setRot(float rotation)
 {
 	this->hitbox.setRotation(rotation);
+}
+
+void Bow::update(float v, sf::Vector2f dir)
+{
+	this->setPos(this->getPos() + v * dir);
 }
 
 Bow::Bow(sf::Vector2f pos, sf::RectangleShape hitbox, float bowFactor, float effectFactor, float kraftigBoge, float mass)

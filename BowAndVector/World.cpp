@@ -6,6 +6,8 @@ World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape ar
 {
 	this->nrOfObjects = 0;
 	this->Button1 = false;
+	this->loaded = false;
+	this->repulsion = true;
 
 	//Set target variables
 	this->addObject(sf::Vector2f (0.9f, 0.5f), sf::Vector2f(32.0f, 32.0f)); //(Pos, Size)
@@ -37,13 +39,39 @@ void World::drawObjects()
 							this->bow.getEfficiency(),
 							this->bow.getBowFactor(),
 							this->bow.getMass());
+
+		if(this->repulsion == true)
+		this->bow.update(this->arrow.getV()/2, -this->arrow.getDir()); //<!--- TODO: Half speed is not dependant on mass
 	}
 
 	//for (int i = 0; i < this->nrOfObjects; i++)
 	//	this->render(this->objectList[i].hitbox);  //<!--- TODO: hitbox <= sprite
+	
+	sf::Image imageBow, imageArrow;
+	sf::RectangleShape *bowPtr, *arrowPtr;
+	
+	if (this->loaded == false)
+	{
+		if (!imageBow.loadFromFile("Bow_01.png"))
+			printf("Yall fucked up fam\n");
+		bowSprite.loadFromImage(imageBow);
 
-	//this->render(this->bow.getHB());
-	//this->render(this->arrow.getHB());
+		sf::RectangleShape *bowPtr = bow.getHB();
+		bowPtr->setTexture(&bowSprite);
+
+		if (!imageArrow.loadFromFile("Arrow_01.png"))
+			printf("Yall fucked up fam\n");
+		arrowSprite.loadFromImage(imageArrow);
+
+		sf::RectangleShape *arrowPtr = arrow.getHB();
+		arrowPtr->setTexture(&arrowSprite);
+
+		this->loaded = true;
+	}
+
+	this->render(*this->bow.getHB());
+
+	this->render(*this->arrow.getHB());
 
 	this->gameWindow.display();
 }
@@ -60,14 +88,23 @@ void World::mouseAim(int index)
 	//gets obj origin coordinates and mouse coordinates
 	sf::Vector2f(objPos) = this->bow.getPos();
 	this->mouse = sf::Mouse::getPosition(this->gameWindow);
-		
-	printf("Pos: %d , %d \n",mouse.x, mouse.y);
 
 	float mouseAngle = -atan2(mouse.x - objPos.x, mouse.y - objPos.y) * 180 / 3.14159; //angle in degrees of rotation
 
-	printf("Angelel: %f \n", fmod(mouseAngle, 360));
+	float finalAngle = fmod(mouseAngle, 360);
 
-	this->bow.setRot(fmod(mouseAngle, 360));
+	//printf("TopKek: %f\n", finalAngle);
+
+	this->bow.setRot(finalAngle);
+	this->arrow.setRot(finalAngle);
+	
+	float a = mouse.x - objPos.x, b = mouse.y - objPos.y;
+
+	sf::Vector2f dir(mouse.x - objPos.x, mouse.y - objPos.y);
+	dir.x /= sqrt(pow((a),2.0) + pow(b, 2.0));
+	dir.y /= sqrt(pow((a), 2.0) + pow(b, 2.0));
+
+	this->arrow.setDir(dir);
 }
 
 void World::mouseBtn1()

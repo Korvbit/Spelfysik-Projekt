@@ -8,8 +8,7 @@ Arrow::Arrow(sf::Vector2f position, sf::RectangleShape hitbox, float mass, float
 	this->C = C;
 	this->hitbox = hitbox;
 	this->hitbox.setOrigin(this->hitbox.getSize().x * 0.5f, this->hitbox.getSize().y * 0.5f);
-	//this->setPos(position);
-	this->setPos(sf::Vector2f(800 * 0.5f, 600 * 0.5f));
+	this->setPos(position);
 	this->velocity = 0;
 }
 
@@ -23,9 +22,29 @@ sf::Vector2f Arrow::getPos()
 	return this->hitbox.getPosition();
 }
 
-sf::RectangleShape Arrow::getHB()
+sf::RectangleShape* Arrow::getHB()
 {
-	return this->hitbox;
+	return &this->hitbox;
+}
+
+void Arrow::setDir(sf::Vector2f dir)
+{
+	this->direction = dir;
+}
+
+void Arrow::setRot(float rotation)
+{
+	this->hitbox.setRotation(rotation);
+}
+
+float Arrow::getV()
+{
+	return this->velocity;
+}
+
+sf::Vector2f Arrow::getDir()
+{
+	return this->direction;
 }
 
 void Arrow::update(bool launch, float Fx, float efficiency, float bowFactor, float bowMass)
@@ -33,7 +52,7 @@ void Arrow::update(bool launch, float Fx, float efficiency, float bowFactor, flo
 	//<!--- Calculate position: Grab data from Bow and World --->
 
 	if(launch)
-		this->velocity = (sqrt((Fx*efficiency) / (this->mass + bowFactor * bowMass))) / 60; // division med 60 pga 60 fps
+		this->velocity = (sqrt((Fx*efficiency) / (this->mass + bowFactor * bowMass)))*10; //<!--- TEMP division med 60 pga 60 fps
 
 	this->setPos(this->getPos() + this->velocity * this->direction);
 
