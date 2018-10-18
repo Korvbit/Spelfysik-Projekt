@@ -1,6 +1,4 @@
-﻿  Bow.cpp
-  main.cpp
-d:\projekt\spelfysik\spelfysik-projekt\bowandvector\main.cpp(8): error C2664: 'World::World(const World &)': cannot convert argument 1 from 'sf::RenderWindow' to 'const World &'
-  d:\projekt\spelfysik\spelfysik-projekt\bowandvector\main.cpp(8): note: Reason: cannot convert from 'sf::RenderWindow' to 'const World'
-  d:\projekt\spelfysik\spelfysik-projekt\bowandvector\main.cpp(8): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
-  Generating Code...
+﻿  main.cpp
+d:\projekt\spelfysik\spelfysik-projekt\bowandvector\main.cpp(19): warning C4129: 'T': unrecognized character escape sequence
+d:\projekt\spelfysik\spelfysik-projekt\bowandvector\main.cpp(19): warning C4129: 'A': unrecognized character escape sequence
+  BowAndVector.vcxproj -> D:\Projekt\Spelfysik\Spelfysik-Projekt\BowAndVector\Debug\BowAndVector.exe

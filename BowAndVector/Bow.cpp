@@ -23,7 +23,12 @@ float Bow::getKraftigBoge()
 
 sf::Vector2f Bow::getPos()
 {
-	return this->pos;
+	return this->hitbox.getPosition();
+}
+
+sf::RectangleShape Bow::getHB()
+{
+	return this->hitbox;
 }
 
 void Bow::setRot(float rotation)
@@ -31,17 +36,22 @@ void Bow::setRot(float rotation)
 	this->hitbox.setRotation(rotation);
 }
 
-Bow::Bow(sf::Vector2f pos, sf::RectangleShape hitbox, sf::Texture bowSprite, float bowFactor, float effectFactor, float kraftigBoge, float mass)
+Bow::Bow(sf::Vector2f pos, sf::RectangleShape hitbox, float bowFactor, float effectFactor, float kraftigBoge, float mass)
 {
 	this->hitbox = hitbox;
+	this->hitbox.setOrigin(this->hitbox.getSize().x * 0.5f, this->hitbox.getSize().y * 0.5f);
 	this->bowFactor = bowFactor;
 	this->efficiency = effectFactor;
 	this->mass = mass;
-	this->bowSprite = bowSprite;
 	this->kraftigBoge = kraftigBoge;
-	this->pos = pos;
+	this->setPos(pos);
 }
 
 Bow::~Bow()
 {
+}
+
+void Bow::setPos(sf::Vector2f pos)
+{
+	this->hitbox.setPosition(pos);
 }

@@ -18,7 +18,7 @@ struct Object
 class World
 {
 public:
-	World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::Texture arrowSprite, sf::Texture bowSprite);
+	World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB);
 	virtual ~World();
 	void drawObjects();
 	sf::Vector2i mouse;

@@ -1,8 +1,8 @@
 #include "World.h"
 
 
-World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::Texture arrowSprite, sf::Texture bowSprite)
-	: gameWindow(window), arrow(BApos, arrowHB, arrowSprite), bow(BApos, bowHB, bowSprite)
+World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB)
+	: gameWindow(window), arrow(BApos, arrowHB), bow(BApos, bowHB)
 {
 	this->nrOfObjects = 0;
 	this->Button1 = false;
@@ -39,8 +39,11 @@ void World::drawObjects()
 							this->bow.getMass());
 	}
 
-	for (int i = 0; i < this->nrOfObjects; i++)
-		this->render(this->objectList[i].hitbox);  //<!--- TODO: hitbox <= sprite
+	//for (int i = 0; i < this->nrOfObjects; i++)
+	//	this->render(this->objectList[i].hitbox);  //<!--- TODO: hitbox <= sprite
+
+	//this->render(this->bow.getHB());
+	//this->render(this->arrow.getHB());
 
 	this->gameWindow.display();
 }
