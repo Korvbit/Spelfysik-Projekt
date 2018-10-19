@@ -1,2 +1,4 @@
 ﻿  Arrow.cpp
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(8): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(66): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   BowAndVector.vcxproj -> C:\Users\same8\Documents\GitHub\Spelfysik-Projekt\BowAndVector\Debug\BowAndVector.exe

@@ -8,6 +8,7 @@ World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape ar
 	this->Button1 = false;
 	this->loaded = false;
 	this->repulsion = true;
+	this->fps = 0;
 
 	//Set target variables
 	this->addObject(sf::Vector2f (0.9f, 0.5f), sf::Vector2f(32.0f, 32.0f)); //(Pos, Size)
@@ -34,7 +35,8 @@ void World::drawObjects()
 	}
 	else
 	{							
-		this->arrow.update(	this->Button1,
+		this->arrow.update(this->fps,
+							this->Button1,
 							this->bow.getKraftigBoge(),
 							this->bow.getEfficiency(),
 							this->bow.getBowFactor(),

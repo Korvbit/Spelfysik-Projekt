@@ -23,6 +23,7 @@ public:
 	virtual ~World();
 	void drawObjects();
 	sf::Vector2i mouse;
+	float fps;
 	bool Button1;
 	bool collisionCheck(int arrow, int objIndex_2);
 

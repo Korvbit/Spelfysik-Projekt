@@ -18,11 +18,14 @@ int main()
 
 	while (window.isOpen())
 	{
-		time = clock.getElapsedTime();
-		float currentTime = clock.restart().asSeconds();
-		float fps = 1.0f / time.asSeconds();
-		
-		printf("FPS: %f\n", fps);
+		if (world.Button1 == true)
+		{
+			time = clock.getElapsedTime();
+			float currentTime = clock.restart().asSeconds();
+			world.fps = time.asSeconds();
+
+			//printf("FPS: %f\n", world.fps);
+		}
 
 		sf::Event event;
 		while (window.pollEvent(event))
