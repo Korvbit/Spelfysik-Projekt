@@ -15,7 +15,7 @@ public:
 
 	void setRot(float rotation);
 	void update(float v, sf::Vector2f dir);
-	Bow(sf::Vector2f pos, sf::RectangleShape hitbox, float bowFactor = 1, float effectFactor = 1, float kraftigBoge = 1, float mass = 1);
+	Bow(sf::Vector2f pos, sf::RectangleShape hitbox, float bowFactor = 0.05f, float effectFactor = 0.9f, float kraftigBoge = 0.7f, float mass = 16.3f);
 	virtual ~Bow();
 
 private:
@@ -28,6 +28,7 @@ private:
 	float bowFactor;
 	float efficiency;
 	float mass;
+	float drawWeight;
 
 };
 

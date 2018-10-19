@@ -50,6 +50,7 @@ Bow::Bow(sf::Vector2f pos, sf::RectangleShape hitbox, float bowFactor, float eff
 	this->mass = mass;
 	this->kraftigBoge = kraftigBoge;
 	this->setPos(pos);
+	this->drawWeight = 13.6f;
 }
 
 Bow::~Bow()

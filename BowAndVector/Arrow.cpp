@@ -54,11 +54,9 @@ void Arrow::update(float fps, bool launch, float Fx, float efficiency, float bow
 {
 	//<!--- Calculate position: Grab data from Bow and World --->
 
-	if(launch)
-		this->velocity = (sqrt((Fx*efficiency) / (this->mass + bowFactor * bowMass))); //<!--- TEMP division med 60 pga 60 fps
-
 	if (realTime == 0)
 	{
+		this->velocity = (sqrt((Fx*16.3f*efficiency) / (this->mass + bowFactor * bowMass)));
 		this->v0 = this->velocity;
 	}
 
@@ -73,7 +71,10 @@ void Arrow::update(float fps, bool launch, float Fx, float efficiency, float bow
 
 	float deceleration = -((this->dragC/this->mass)*pow(this->velocity,2)); //TODO: Check if correct lol
 
-	this->velocity -= deceleration;
+	this->velocity += deceleration;
+
+	if (this->velocity <= 0)
+		this->velocity = 0;
 
 	this->realTime += fps;
 
