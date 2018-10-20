@@ -37,7 +37,10 @@ private:
 	Bow bow;
 	bool loaded;
 	bool repulsion;
+	float gravity;
+	float density;
 
+	void trajectoryRot();
 	void mouseAim(int index);
 	void mouseBtn1();
 	void addObject(sf::Vector2f pos, sf::Vector2f size);

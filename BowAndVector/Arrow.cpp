@@ -5,6 +5,7 @@
 
 Arrow::Arrow(sf::Vector2f position, sf::RectangleShape hitbox, float mass, float C)
 {
+	this->area = 0.0002; //8mm diameter
 	this->dragC = 1.6;
 	this->realTime = 0;
 	this->mass = mass;
@@ -50,35 +51,46 @@ sf::Vector2f Arrow::getDir()
 	return this->direction;
 }
 
-void Arrow::update(float fps, bool launch, float Fx, float efficiency, float bowFactor, float bowMass)
+void Arrow::update(float gravity, float density, float fps, bool launch,
+	float Fx, float efficiency, float bowFactor, float bowMass)
 {
 	//<!--- Calculate position: Grab data from Bow and World --->
 
+	float drawBack = Fx;
+	drawBack = drawBack*(16.3*gravity);
+
 	if (realTime == 0)
 	{
-		this->velocity = (sqrt((Fx*16.3f*efficiency) / (this->mass + bowFactor * bowMass)));
-		this->v0 = this->velocity;
+		this->velocity = (sqrt((drawBack*efficiency) / (this->mass + bowFactor * bowMass)));
 	}
 
-	float newPos = (this->mass / this->dragC
-		* log(2.71828)*((this->v0 * this->dragC) / this->mass * realTime + 1));
+	this->realTime += fps;
 
-	float x = newPos * this->direction.x;
+	float Fd = 0.5 * density * this->area * this->dragC * pow(this->velocity, 2);
 
-	float y = newPos * this->direction.y;
+	float Vx = this->velocity * this->direction.x;
+	float Vy = this->velocity * this->direction.y;
+	float ax = -((Fd*Vx) / (this->mass*this->velocity));
+	float ay = -gravity -((Fd*Vy) / (this->mass*this->velocity));
 
-	this->setPos(sf::Vector2f(W_WIDTH * 0.05f, W_HEIGHT * 0.90f) + sf::Vector2f(x,y));
+	//this->velocity += deceleration;
+	sf::Vector2f accVec(ax, ay);
+	sf::Vector2f at2 = (accVec*pow(realTime, 2));
 
-	float deceleration = -((this->dragC/this->mass)*pow(this->velocity,2)); //TODO: Check if correct lol
+	sf::Vector2f newV(sf::Vector2f(Vx, Vy)*realTime + (sf::Vector2f(at2*(float)0.5)));
 
-	this->velocity += deceleration;
+	this->setPos(sf::Vector2f(W_WIDTH * 0.05f, W_HEIGHT * 0.90f) + newV);
+
+	this->velocity = sqrt(pow(newV.x, 2) + pow(newV.y, 2));
+
+	sf::Vector2f newDir = sf::Vector2f(Vx, Vy);
+	this->direction.x /= sqrt(pow((newDir.x), 2.0) + pow(newDir.y, 2.0));
+	this->direction.y /= sqrt(pow((newDir.x), 2.0) + pow(newDir.y, 2.0));
 
 	if (this->velocity <= 0)
 		this->velocity = 0;
 
-	this->realTime += fps;
-
-	printf("Current Time: %f, GottaGoFast: %f\n", realTime, velocity);
+	printf("Current Time: %f, V: %f, ax: %f, ay: %f,\n", realTime, this->velocity, ax, ay);
 	
 }
 

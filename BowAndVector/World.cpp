@@ -5,9 +5,11 @@ World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape ar
 	: gameWindow(window), arrow(BApos, arrowHB), bow(BApos, bowHB)
 {
 	this->nrOfObjects = 0;
+	this->density = 1.225;//<!--- TODO: Input based
+	this->gravity = 9.82; //<!--- TODO: ^
 	this->Button1 = false;
 	this->loaded = false;
-	this->repulsion = true;
+	this->repulsion = false;
 	this->fps = 0;
 
 	//Set target variables
@@ -35,12 +37,16 @@ void World::drawObjects()
 	}
 	else
 	{							
-		this->arrow.update(this->fps,
+		this->arrow.update(this->gravity,
+							this->density, 
+							this->fps,
 							this->Button1,
 							this->bow.getKraftigBoge(),
 							this->bow.getEfficiency(),
 							this->bow.getBowFactor(),
 							this->bow.getMass());
+
+		trajectoryRot();
 
 		if(this->repulsion == true)
 		this->bow.update(this->arrow.getV()/2, -this->arrow.getDir()); //<!--- TODO: Half speed is not dependant on mass
@@ -81,6 +87,20 @@ void World::drawObjects()
 void World::render(sf::Drawable &drawable)
 {
 	this->gameWindow.draw(drawable);
+}
+
+void World::trajectoryRot()
+{
+	sf::Vector2f normal(this->arrow.getPos().x+1.0f, this->arrow.getPos().y);
+
+	normal.x /= sqrt(pow((normal.x), 2.0) + pow(normal.y, 2.0));
+	normal.y /= sqrt(pow((normal.x), 2.0) + pow(normal.y, 2.0));
+
+	float mouseAngle = -atan2(this->arrow.getDir().x - normal.x, this->arrow.getDir().y - normal.y) * 180 / 3.14159; //angle in degrees of rotation
+
+	float finalAngle = fmod(mouseAngle, 360);
+
+	this->arrow.setRot(finalAngle);
 }
 
 void World::mouseAim(int index)

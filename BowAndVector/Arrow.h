@@ -16,11 +16,13 @@ public:
 	float getV();
 	sf::Vector2f getDir();
 
-	void update(float fps, bool launch, float Fx, float efficiency, float bowFactor, float bowMass);
+	void update(float gravity, float density, float fps, bool launch,
+		float Fx, float efficiency, float bowFactor, float bowMass);
 private:
 	void setPos(sf::Vector2f pos);
 
 	float realTime;
+	float area;
 	float v0;
 	float mass;
 	float C;
