@@ -9,17 +9,20 @@ public:
 	virtual ~Arrow();
 	sf::Vector2f getPos();
 	sf::RectangleShape* getHB();
+	bool firstCalc;
 
 	void setDir(sf::Vector2f dir);
 	void setRot(float rotation);
+	void setPos(sf::Vector2f pos);
+	void setV(int v);
 
 	float getV();
 	sf::Vector2f getDir();
-
+	
 	void update(float gravity, float density, float fps, bool launch,
 		float Fx, float efficiency, float bowFactor, float bowMass);
 private:
-	void setPos(sf::Vector2f pos);
+	
 
 	float realTime;
 	float area;

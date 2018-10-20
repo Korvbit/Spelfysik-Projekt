@@ -10,16 +10,11 @@ World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape ar
 	this->Button1 = false;
 	this->loaded = false;
 	this->repulsion = false;
+	this->endGame = false;
 	this->fps = 0;
 
-	//Set target variables
-	this->addObject(sf::Vector2f (0.9f, 0.5f), sf::Vector2f(32.0f, 32.0f)); //(Pos, Size)
-
-	//Set bow variables
-	this->addObject(sf::Vector2f(0.1f, 0.9f), sf::Vector2f(32.0f, 32.0f));
-
-	//Set arrow variables
-	this->addObject(sf::Vector2f(0.1f, 0.8f), sf::Vector2f(32.0f, 32.0f));
+	//Set Object variables
+	this->addObject(sf::Vector2f (0.9f, 0.5f), sf::Vector2f(54.0f, 54.0f)); //(Pos, Size)
 }
 
 World::~World()
@@ -28,51 +23,71 @@ World::~World()
 
 void World::drawObjects()
 {
+
 	this->gameWindow.clear();
 
-	if (this->Button1 == false)
+	if (this->endGame == false)
 	{
-		mouseAim(1);
-		mouseBtn1(); // true if button has been pressed
+		if (this->Button1 == false)
+		{
+			mouseAim(1);
+			mouseBtn1(); // true if button has been pressed
+		}
+		else
+		{
+			this->arrow.update(this->gravity,
+				this->density,
+				this->fps,
+				this->Button1,
+				this->bow.getKraftigBoge(),
+				this->bow.getEfficiency(),
+				this->bow.getBowFactor(),
+				this->bow.getMass());
+
+			trajectoryRot();
+
+			if (this->repulsion == true)
+				this->bow.update(this->arrow.getV() / 2, -this->arrow.getDir()); //<!--- TODO: Half speed is not dependant on mass
+
+			
+		}
 	}
-	else
-	{							
-		this->arrow.update(this->gravity,
-							this->density, 
-							this->fps,
-							this->Button1,
-							this->bow.getKraftigBoge(),
-							this->bow.getEfficiency(),
-							this->bow.getBowFactor(),
-							this->bow.getMass());
 
-		//trajectoryRot();
+	mouseBtn2(); //Resets arrow
 
-		if(this->repulsion == true)
-		this->bow.update(this->arrow.getV()/2, -this->arrow.getDir()); //<!--- TODO: Half speed is not dependant on mass
-	}
+	sf::Vector2f arrowPos(this->arrow.getPos());
+	//printf("Arrow X: %f, Y: %f\n", arrowPos.x, arrowPos.y);
+		
+	/*sf::Vertex line[] =
+	{
+		sf::Vertex(this->arrow.getPos()),
+		sf::Vertex(this->arrow.getPos() + this->arrow.getDir()*(float)100)
+	};
 
-	//for (int i = 0; i < this->nrOfObjects; i++)
-	//	this->render(this->objectList[i].hitbox);  //<!--- TODO: hitbox <= sprite
-	
-	sf::Image imageBow, imageArrow;
-	sf::RectangleShape *bowPtr, *arrowPtr;
+	this->gameWindow.draw(line, 2, sf::Lines);
+	*/
+
+	sf::Image imageBow, imageArrow, imageObj;
 	
 	if (this->loaded == false)
 	{
 		if (!imageBow.loadFromFile("Bow_01.png"))
-			printf("Yall fucked up fam\n");
+			printf("Error: File could not be loaded. :-(\n");
 		bowSprite.loadFromImage(imageBow);
 
 		sf::RectangleShape *bowPtr = bow.getHB();
 		bowPtr->setTexture(&bowSprite);
 
 		if (!imageArrow.loadFromFile("Arrow_01.png"))
-			printf("Yall fucked up fam\n");
+			printf("Error: File could not be loaded. :-(\n");
 		arrowSprite.loadFromImage(imageArrow);
 
 		sf::RectangleShape *arrowPtr = arrow.getHB();
 		arrowPtr->setTexture(&arrowSprite);
+
+		if (!imageObj.loadFromFile("Object_01.png"))
+			printf("Error: File could not be loaded. :-(\n");
+		objSprite.loadFromImage(imageObj);
 
 		this->loaded = true;
 	}
@@ -80,6 +95,18 @@ void World::drawObjects()
 	this->render(*this->bow.getHB());
 
 	this->render(*this->arrow.getHB());
+
+	for (int i = 0; i < this->nrOfObjects; i++)
+	{
+
+		this->render(this->objectList[i].hitbox);  //<!--- TODO: hitbox <= sprite
+		if (collisionCheck(i))
+		{
+			this->arrow.setV(0);
+			this->endGame = true;
+		}
+
+	}
 
 	this->gameWindow.display();
 }
@@ -91,16 +118,15 @@ void World::render(sf::Drawable &drawable)
 
 void World::trajectoryRot()
 {
-	sf::Vector2f normal(this->arrow.getPos().x+1.0f, this->arrow.getPos().y);
-
-	normal.x /= sqrt(pow((normal.x), 2.0) + pow(normal.y, 2.0));
-	normal.y /= sqrt(pow((normal.x), 2.0) + pow(normal.y, 2.0));
-
-	float mouseAngle = -atan2(this->arrow.getDir().x - normal.x, this->arrow.getDir().y - normal.y) * 180 / 3.14159; //angle in degrees of rotation
+	float mouseAngle = -atan2(this->arrow.getPos().x+this->arrow.getDir().x - this->arrow.getPos().x,
+		this->arrow.getPos().y+this->arrow.getDir().y - this->arrow.getPos().y) * 
+		180 / 3.14159; //angle in degrees of rotation
 
 	float finalAngle = fmod(mouseAngle, 360);
 
-	this->arrow.setRot(finalAngle);
+	this->arrow.setRot(mouseAngle);
+
+	//printf("\n\nRot: %f\n\n", mouseAngle);
 }
 
 void World::mouseAim(int index)
@@ -115,7 +141,7 @@ void World::mouseAim(int index)
 
 	float finalAngle = fmod(mouseAngle, 360);
 
-	//printf("TopKek: %f\n", finalAngle);
+	//printf("mouseAngle: %f\n", finalAngle);
 
 	this->bow.setRot(finalAngle);
 	this->arrow.setRot(finalAngle);
@@ -138,6 +164,17 @@ void World::mouseBtn1()
 	}
 }
 
+void World::mouseBtn2()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
+	{
+		this->arrow.setPos((sf::Vector2f(W_WIDTH * 0.05f, W_HEIGHT * 0.90f)));
+		this->Button1 = false;
+		this->arrow.firstCalc = true;
+		this->endGame = false;
+	}
+}
+
 void World::addObject(sf::Vector2f pos, sf::Vector2f size) //TODO: Add Texture to obj
 {
 	Object obj;
@@ -148,22 +185,20 @@ void World::addObject(sf::Vector2f pos, sf::Vector2f size) //TODO: Add Texture t
 	obj.hitbox.setPosition(obj.pos);
 	obj.hitbox.setFillColor(sf::Color::Green);
 
+	sf::RectangleShape *objPtr = &obj.hitbox;
+	objPtr->setTexture(&this->objSprite);
+
 	this->objectList[this->nrOfObjects++] = obj;
 }
 
-bool World::collisionCheck(int arrow, int objIndex_2)
+bool World::collisionCheck(int objIndex_2)
 {
-	/* <!---
-
-	if (this->objectList[objIndex_1].hitbox 
-	overlaps with this->objectList[objIndex_2].hitbox):
-	
-	return true;
-	
-	else:
-
-	---> */
-
-
-	return false;
+	if (this->arrow.getHB()->getGlobalBounds().intersects(this->objectList[objIndex_2].hitbox.getGlobalBounds()) == true) //Checks intersection between getGlobalBounds() functions
+	{
+		return true; //intersect
+	}
+	else
+	{
+		return false; //!intersect
+	}
 }

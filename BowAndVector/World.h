@@ -25,24 +25,27 @@ public:
 	sf::Vector2i mouse;
 	float fps;
 	bool Button1;
-	bool collisionCheck(int arrow, int objIndex_2);
+	bool collisionCheck(int objIndex_2);
 
 private:
 	sf::RenderWindow &gameWindow;
 	sf::Texture arrowSprite;
 	sf::Texture bowSprite;
+	sf::Texture objSprite;
 	struct Object objectList[256];
 	int nrOfObjects;
 	Arrow arrow;
 	Bow bow;
 	bool loaded;
 	bool repulsion;
+	bool endGame;
 	float gravity;
 	float density;
 
 	void trajectoryRot();
 	void mouseAim(int index);
 	void mouseBtn1();
+	void mouseBtn2();
 	void addObject(sf::Vector2f pos, sf::Vector2f size);
 	void render(sf::Drawable &drawable); //Calls draw()
 };

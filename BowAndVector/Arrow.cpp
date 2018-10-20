@@ -14,6 +14,8 @@ Arrow::Arrow(sf::Vector2f position, sf::RectangleShape hitbox, float mass, float
 	this->hitbox.setOrigin(this->hitbox.getSize().x * 0.5f, this->hitbox.getSize().y * 0.5f);
 	this->setPos(position);
 	this->velocity = 0;
+
+	this->firstCalc = true;
 }
 
 
@@ -59,12 +61,16 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 	float drawBack = Fx;
 	drawBack = drawBack*(16.3*gravity);
 
-	if (realTime == 0)
+	if(this->firstCalc)
 	{
 		this->velocity = (sqrt((drawBack*efficiency) / (this->mass + bowFactor * bowMass)));
+		this->firstCalc = false;
 	}
 
-	this->realTime += fps;
+	if (fps > 0.017f)
+	{
+		fps = 0.017f;
+	}
 
 	float Fd = 0.5 * density * this->area * this->dragC * pow(this->velocity, 2);
 
@@ -82,7 +88,7 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 
 	this->direction = sf::Vector2f(newSpeedX / this->velocity, newSpeedY / this->velocity);
 
-	float alpha = 180*acos(this->direction.x)/3.141592f;
+	float alpha = -acos(this->direction.x)*180 / 3.141592f;
 
 	this->setRot(fmod(alpha, 360));
 
@@ -91,11 +97,16 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 	if (this->velocity <= 0)
 		this->velocity = 0;
 
-	printf("Current Time: %f, V: %f, ax: %f, ay: %f,\n", fps, this->velocity, ax, ay);
+	printf("V: %f, Vx: %f\n",this->velocity, Vx);
 	
 }
 
 void Arrow::setPos(sf::Vector2f pos)
 {
 	this->hitbox.setPosition(pos);
+}
+
+void Arrow::setV(int v)
+{
+	this->velocity = v;
 }
