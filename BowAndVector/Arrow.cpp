@@ -70,27 +70,28 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 
 	float Vx = this->velocity * this->direction.x;
 	float Vy = this->velocity * this->direction.y;
+
 	float ax = -((Fd*Vx) / (this->mass*this->velocity));
-	float ay = -gravity -((Fd*Vy) / (this->mass*this->velocity));
+	float ay = -((Fd*Vy) / (this->mass*this->velocity));
+	float grav = gravity;
 
-	//this->velocity += deceleration;
-	sf::Vector2f accVec(ax, ay);
-	sf::Vector2f at2 = (accVec*pow(realTime, 2));
+	float newSpeedX = Vx + ax*fps;
+	float newSpeedY = Vy + (ay*fps + grav*fps);
+	
+	this->velocity = sqrt(newSpeedX * newSpeedX + newSpeedY * newSpeedY);
 
-	sf::Vector2f newV(sf::Vector2f(Vx, Vy)*realTime + (sf::Vector2f(at2*(float)0.5)));
+	this->direction = sf::Vector2f(newSpeedX / this->velocity, newSpeedY / this->velocity);
 
-	this->setPos(sf::Vector2f(W_WIDTH * 0.05f, W_HEIGHT * 0.90f) + newV);
+	float alpha = 180*acos(this->direction.x)/3.141592f;
 
-	this->velocity = sqrt(pow(newV.x, 2) + pow(newV.y, 2));
+	this->setRot(fmod(alpha, 360));
 
-	sf::Vector2f newDir = sf::Vector2f(Vx, Vy);
-	this->direction.x /= sqrt(pow((newDir.x), 2.0) + pow(newDir.y, 2.0));
-	this->direction.y /= sqrt(pow((newDir.x), 2.0) + pow(newDir.y, 2.0));
+	this->setPos(this->getPos() + sf::Vector2f(newSpeedX, newSpeedY));
 
 	if (this->velocity <= 0)
 		this->velocity = 0;
 
-	printf("Current Time: %f, V: %f, ax: %f, ay: %f,\n", realTime, this->velocity, ax, ay);
+	printf("Current Time: %f, V: %f, ax: %f, ay: %f,\n", fps, this->velocity, ax, ay);
 	
 }
 

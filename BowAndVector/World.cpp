@@ -46,7 +46,7 @@ void World::drawObjects()
 							this->bow.getBowFactor(),
 							this->bow.getMass());
 
-		trajectoryRot();
+		//trajectoryRot();
 
 		if(this->repulsion == true)
 		this->bow.update(this->arrow.getV()/2, -this->arrow.getDir()); //<!--- TODO: Half speed is not dependant on mass
