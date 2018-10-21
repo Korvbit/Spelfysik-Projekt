@@ -143,7 +143,7 @@ void World::loadTextures(sf::RectangleShape *background)
 			printf("Error: File could not be loaded. :-(\n");
 		this->objSprite.loadFromImage(imageObj);
 
-		if (!bg1Obj.loadFromFile("bg.png"))
+		if (!bg1Obj.loadFromFile("bgDark.png"))
 			printf("Error: File could not be loaded. :-(\n");
 		this->bg1.loadFromImage(bg1Obj);
 
