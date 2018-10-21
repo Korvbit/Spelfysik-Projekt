@@ -46,6 +46,7 @@ private:
 	void mouseAim(int index);
 	void mouseBtn1();
 	void mouseBtn2();
+	void setTexture(Object object);
 	void addObject(sf::Vector2f pos, sf::Vector2f size);
 	void render(sf::Drawable &drawable); //Calls draw()
 };

@@ -1,9 +1,7 @@
-﻿  World.cpp
+﻿  main.cpp
+  World.cpp
 c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(8): warning C4305: '=': truncation from 'double' to 'float'
 c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(9): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(90): error C2664: 'bool sf::Texture::loadFromImage(const sf::Image &,const sf::IntRect &)': cannot convert argument 1 from 'sf::Image *' to 'const sf::Image &'
-  c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(90): note: Reason: cannot convert from 'sf::Image *' to 'const sf::Image'
-  c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(90): note: No constructor could take the source type, or constructor overload resolution was ambiguous
 c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(123): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(125): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(140): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
@@ -18,3 +16,12 @@ c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(153): w
           [
               T=float
           ]
+  Arrow.cpp
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(8): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(9): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(62): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(75): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(93): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(111): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+  BowAndVector.vcxproj -> C:\Users\same8\Documents\GitHub\Spelfysik-Projekt\BowAndVector\Debug\BowAndVector.exe

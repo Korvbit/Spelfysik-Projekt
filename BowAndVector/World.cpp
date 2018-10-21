@@ -73,21 +73,21 @@ void World::drawObjects()
 	{
 		if (!imageBow.loadFromFile("Bow_01.png"))
 			printf("Error: File could not be loaded. :-(\n");
-		bowSprite.loadFromImage(imageBow);
+		this->bowSprite.loadFromImage(imageBow);
 
 		sf::RectangleShape *bowPtr = bow.getHB();
 		bowPtr->setTexture(&bowSprite);
 
 		if (!imageArrow.loadFromFile("Arrow_01.png"))
 			printf("Error: File could not be loaded. :-(\n");
-		arrowSprite.loadFromImage(imageArrow);
+		this->arrowSprite.loadFromImage(imageArrow);
 
 		sf::RectangleShape *arrowPtr = arrow.getHB();
 		arrowPtr->setTexture(&arrowSprite);
 
 		if (!imageObj.loadFromFile("Object_01.png"))
 			printf("Error: File could not be loaded. :-(\n");
-		objSprite.loadFromImage(imageObj);
+		this->objSprite.loadFromImage(imageObj);
 
 		this->loaded = true;
 	}
@@ -175,18 +175,23 @@ void World::mouseBtn2()
 	}
 }
 
+void World::setTexture(Object object)
+{
+	object.hitbox.setTexture(&objSprite);
+}
+
 void World::addObject(sf::Vector2f pos, sf::Vector2f size) //TODO: Add Texture to obj
 {
 	Object obj;
+
+	sf::RectangleShape *objPtr = &obj.hitbox;
 
 	obj.pos = sf::Vector2f(W_WIDTH * pos.x, W_HEIGHT * pos.y);
 	obj.hitbox.setSize(size);
 	obj.hitbox.setOrigin(size.x * 0.5f, size.y * 0.5f);
 	obj.hitbox.setPosition(obj.pos);
-	obj.hitbox.setFillColor(sf::Color::Green);
-
-	sf::RectangleShape *objPtr = &obj.hitbox;
-	objPtr->setTexture(&this->objSprite);
+	obj.texture = this->objSprite;
+	obj.hitbox.setTexture(&obj.texture);
 
 	this->objectList[this->nrOfObjects++] = obj;
 }
