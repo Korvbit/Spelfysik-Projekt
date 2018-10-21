@@ -53,14 +53,14 @@ sf::Vector2f Arrow::getDir()
 	return this->direction;
 }
 
-void Arrow::update(float gravity, float density, float fps, bool launch,
+void Arrow::update(float drawWeight, float gravity, float density, float fps, bool launch,
 	float Fx, float efficiency, float bowFactor, float bowMass)
 {
 	//<!--- Calculate position: Grab data from Bow and World --->
 
 	float time = fps;
 	float drawBack = Fx; //<!--- TODO: Make strength an input
-	drawBack = drawBack*(16.3*gravity);
+	drawBack = drawBack*drawWeight;
 
 	if(this->firstCalc)
 	{
@@ -98,7 +98,7 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 	if (this->velocity <= 0)
 		this->velocity = 0;
 
-	printf("Time: %f, FPS: %f\n",time, fps);
+	//printf("Hästighät %f\n", this->velocity);
 	
 }
 

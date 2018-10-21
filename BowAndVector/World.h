@@ -1,10 +1,21 @@
-#pragma once
+#ifndef WORLD_H
+#define WORLD_H
 
 #include <string>
 #include "Arrow.h"
 #include "Bow.h"
 #include <SFML\Graphics.hpp>
 #include <cmath>
+
+struct worldInfo {
+	float gravity;
+	float density;
+};
+
+struct info {
+	struct worldInfo worldData;
+	struct bowInfo bowData;
+};
 
 const int W_WIDTH = 1280, W_HEIGHT = 720;
 
@@ -19,7 +30,7 @@ struct Object
 class World
 {
 public:
-	World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::RectangleShape objHB, sf::RectangleShape background);
+	World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::RectangleShape objHB, sf::RectangleShape background, info input);
 	virtual ~World();
 	void drawObjects(sf::View *view, sf::RectangleShape background);
 	sf::Vector2i mouse;
@@ -58,3 +69,4 @@ private:
 	void render(sf::Drawable &drawable); //Calls draw()
 };
 
+#endif

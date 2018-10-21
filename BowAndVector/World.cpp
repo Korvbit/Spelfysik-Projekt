@@ -1,12 +1,12 @@
 #include "World.h"
 
 
-World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::RectangleShape objHB, sf::RectangleShape background)
-	: gameWindow(window), arrow(BApos, arrowHB), bow(BApos, bowHB)
+World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::RectangleShape objHB, sf::RectangleShape background, info input)
+	: gameWindow(window), arrow(BApos, arrowHB), bow(BApos, bowHB, input.bowData)
 {
 	this->nrOfObjects = 0;
-	this->density = 1.225;//<!--- TODO: Input based
-	this->gravity = 9.82; //<!--- TODO: ^
+	this->density = input.worldData.density;
+	this->gravity = input.worldData.gravity;
 	this->Button1 = false;
 	this->loaded = false;
 	this->repulsion = false;
@@ -55,14 +55,15 @@ void World::drawObjects(sf::View *view, sf::RectangleShape background)
 		}
 		else
 		{
-			this->arrow.update(this->gravity,
-				this->density,
-				this->fps,
-				this->Button1,
-				this->bow.getKraftigBoge(),
-				this->bow.getEfficiency(),
-				this->bow.getBowFactor(),
-				this->bow.getMass());
+			this->arrow.update(	this->bow.getDraw(), 
+								this->gravity,
+								this->density,
+								this->fps,
+								this->Button1,
+								this->bow.getKraftigBoge(),
+								this->bow.getEfficiency(),
+								this->bow.getBowFactor(),
+								this->bow.getMass());
 
 			trajectoryRot();
 
@@ -198,8 +199,17 @@ void World::mouseAim(int index)
 	float a = mouse.x - objPos.x, b = mouse.y - objPos.y;
 
 	sf::Vector2f dir(mouse.x - objPos.x, mouse.y - objPos.y);
-	dir.x /= sqrt(pow((a),2.0) + pow(b, 2.0));
+
+	float drawLength = sqrt(dir.x*dir.x + dir.y*dir.y);
+	if (drawLength > W_HEIGHT)
+		drawLength = W_HEIGHT;
+	drawLength /= 360;
+	this->bow.setDraw(drawLength);
+
+	dir.x /= sqrt(pow((a), 2.0) + pow(b, 2.0));
 	dir.y /= sqrt(pow((a), 2.0) + pow(b, 2.0));
+
+	//printf("Dragloingd: %f", drawLength);
 
 	this->arrow.setDir(dir);
 }

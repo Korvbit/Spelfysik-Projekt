@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ARROW_H
+#define ARROW_H
 
 #include <SFML\Graphics.hpp>
 
@@ -19,7 +20,7 @@ public:
 	float getV();
 	sf::Vector2f getDir();
 	
-	void update(float gravity, float density, float fps, bool launch,
+	void update(float drawWeight, float gravity, float density, float fps, bool launch,
 		float Fx, float efficiency, float bowFactor, float bowMass);
 private:
 	
@@ -34,3 +35,5 @@ private:
 	float velocity;
 	sf::Vector2f direction;
 };
+
+#endif
