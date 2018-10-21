@@ -27,7 +27,7 @@ World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape ar
 
 	sf::Sprite *ptr = &this->bgRec1;
 	bgRec1.setPosition(0, 0);
-	sf::Vector2i *ptr1 = &sf::Vector2i(928*10, (int)W_HEIGHT);
+	sf::Vector2i *ptr1 = &sf::Vector2i(928*15, (int)W_HEIGHT);
 	sf::Vector2i *ptr2 = &sf::Vector2i(0, 0);
 	ptr->setTextureRect(sf::IntRect(*ptr2, *ptr1));
 }
@@ -78,6 +78,9 @@ void World::drawObjects(sf::View *view, sf::RectangleShape background)
 				view->move(delta, 0.0f);
 				gameWindow.setView(*view);
 			}
+
+			/*realSpeed = this->arrow.getV() * 72.0f;
+			printf("Speed: %f m/s\n", realSpeed);*/
 		}
 	}
 

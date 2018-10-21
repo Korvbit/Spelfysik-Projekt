@@ -46,6 +46,7 @@ private:
 	bool endGame;
 	float gravity;
 	float density;
+	float realSpeed;
 
 	void loadTextures(sf::RectangleShape *background);
 	void trajectoryRot();

@@ -59,7 +59,7 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 	//<!--- Calculate position: Grab data from Bow and World --->
 
 	float time = fps;
-	float drawBack = Fx;
+	float drawBack = Fx; //<!--- TODO: Make strength an input
 	drawBack = drawBack*(16.3*gravity);
 
 	if(this->firstCalc)
@@ -75,8 +75,8 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 
 	float Fd = 0.5 * density * this->area * this->dragC * pow(this->velocity, 2);
 
-	float Vx = this->velocity * this->direction.x;
-	float Vy = this->velocity * this->direction.y;
+	float Vx = (this->velocity) * this->direction.x;
+	float Vy = (this->velocity) * this->direction.y;
 
 	float ax = -((Fd*Vx) / (this->mass*this->velocity));
 	float ay = -((Fd*Vy) / (this->mass*this->velocity));

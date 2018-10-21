@@ -1,18 +1,26 @@
-﻿  World.cpp
+﻿  Arrow.cpp
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(8): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(9): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(63): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(76): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(94): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\arrow.cpp(112): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  World.cpp
 c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(8): warning C4305: '=': truncation from 'double' to 'float'
 c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(9): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(169): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(171): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(186): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(188): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(198): warning C4244: '/=': conversion from 'double' to 'T', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(172): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(174): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(189): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(191): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(201): warning C4244: '/=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(199): warning C4244: '/=': conversion from 'double' to 'T', possible loss of data
+c:\users\same8\documents\github\spelfysik-projekt\bowandvector\world.cpp(202): warning C4244: '/=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
+  Generating Code...
   BowAndVector.vcxproj -> C:\Users\same8\Documents\GitHub\Spelfysik-Projekt\BowAndVector\Debug\BowAndVector.exe
