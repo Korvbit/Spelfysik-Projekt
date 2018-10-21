@@ -3,13 +3,18 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "BowAndVector");
+	sf::View view(sf::Vector2f(W_WIDTH*0.5, W_HEIGHT*0.5), sf::Vector2f(W_WIDTH, W_HEIGHT));
 
-	sf::Vector2f BApos = sf::Vector2f(W_WIDTH * 0.05f, W_HEIGHT * 0.90f);
+	sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "BowAndVector");
+	
+	sf::Vector2f BApos = sf::Vector2f(54.0f, W_HEIGHT * 0.90f);
 	sf::RectangleShape arrowHB(sf::Vector2f(11.0f, 54.0f));
 	sf::RectangleShape bowHB(sf::Vector2f(54.0f, 54.0f));
+	sf::RectangleShape objHB(sf::Vector2f(54.0f, 54.0f));
 
-	World world(window, BApos, arrowHB, bowHB);
+	sf::RectangleShape background(sf::Vector2f(W_WIDTH, W_HEIGHT));
+
+	World world(window, BApos, arrowHB, bowHB, objHB, background);
 
 	window.setFramerateLimit(60);
 
@@ -34,7 +39,7 @@ int main()
 				window.close();	
 		}
 
-		world.drawObjects();
+		world.drawObjects(&view, background);
 	}
 
 	return 0;

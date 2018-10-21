@@ -58,6 +58,7 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 {
 	//<!--- Calculate position: Grab data from Bow and World --->
 
+	float time = fps;
 	float drawBack = Fx;
 	drawBack = drawBack*(16.3*gravity);
 
@@ -67,9 +68,9 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 		this->firstCalc = false;
 	}
 
-	if (fps > 0.017f)
+	if (time > 0.017f)
 	{
-		fps = 0.017f;
+		time = 0.017f;
 	}
 
 	float Fd = 0.5 * density * this->area * this->dragC * pow(this->velocity, 2);
@@ -81,8 +82,8 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 	float ay = -((Fd*Vy) / (this->mass*this->velocity));
 	float grav = gravity;
 
-	float newSpeedX = Vx + ax*fps;
-	float newSpeedY = Vy + (ay*fps + grav*fps);
+	float newSpeedX = Vx + ax*time;
+	float newSpeedY = Vy + (ay*time + grav*time);
 	
 	this->velocity = sqrt(newSpeedX * newSpeedX + newSpeedY * newSpeedY);
 
@@ -97,7 +98,7 @@ void Arrow::update(float gravity, float density, float fps, bool launch,
 	if (this->velocity <= 0)
 		this->velocity = 0;
 
-	printf("V: %f, Vx: %f\n",this->velocity, Vx);
+	printf("Time: %f, FPS: %f\n",time, fps);
 	
 }
 

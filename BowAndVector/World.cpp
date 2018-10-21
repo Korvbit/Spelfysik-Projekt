@@ -1,7 +1,7 @@
 #include "World.h"
 
 
-World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB)
+World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::RectangleShape objHB, sf::RectangleShape background)
 	: gameWindow(window), arrow(BApos, arrowHB), bow(BApos, bowHB)
 {
 	this->nrOfObjects = 0;
@@ -14,17 +14,37 @@ World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape ar
 	this->fps = 0;
 
 	//Set Object variables
-	this->addObject(sf::Vector2f (0.9f, 0.5f), sf::Vector2f(54.0f, 54.0f)); //(Pos, Size)
+	objHB.setPosition(W_WIDTH * 0.9f, W_HEIGHT * 0.5f);
+	objHB.setOrigin(objHB.getSize().x * 0.5f, objHB.getSize().y * 0.5f);
+	this->addObject(&objHB); //(Pos, Size)
+
+	for (int i = 0; i < 255; i++)
+	{
+		objHB.setPosition((W_WIDTH * 0.0f)+(54*(i)), W_HEIGHT * 1.0f);
+		objHB.setOrigin(objHB.getSize().x * 0.5f, objHB.getSize().y * 0.5f);
+		this->addObject(&objHB); //(Pos, Size)
+	}
+
+	sf::Sprite *ptr = &this->bgRec1;
+	bgRec1.setPosition(0, 0);
+	sf::Vector2i *ptr1 = &sf::Vector2i(928*10, (int)W_HEIGHT);
+	sf::Vector2i *ptr2 = &sf::Vector2i(0, 0);
+	ptr->setTextureRect(sf::IntRect(*ptr2, *ptr1));
 }
 
 World::~World()
 {
 }
 
-void World::drawObjects()
+void World::drawObjects(sf::View *view, sf::RectangleShape background)
 {
-
 	this->gameWindow.clear();
+
+	this->loadTextures(&background);
+
+	background.setPosition(W_WIDTH*0.5f, W_HEIGHT*0.5f);
+
+	this->render(this->bgRec1);
 
 	if (this->endGame == false)
 	{
@@ -49,11 +69,19 @@ void World::drawObjects()
 			if (this->repulsion == true)
 				this->bow.update(this->arrow.getV() / 2, -this->arrow.getDir()); //<!--- TODO: Half speed is not dependant on mass
 
-			
+			if (this->arrow.getPos().x > W_WIDTH*0.49)
+			{
+				float delta = this->arrow.getPos().x - view->getCenter().x;
+				if (delta > 54)
+					delta = 54;
+
+				view->move(delta, 0.0f);
+				gameWindow.setView(*view);
+			}
 		}
 	}
 
-	mouseBtn2(); //Resets arrow
+	mouseBtn2(view); //Resets arrow
 
 	sf::Vector2f arrowPos(this->arrow.getPos());
 	//printf("Arrow X: %f, Y: %f\n", arrowPos.x, arrowPos.y);
@@ -66,31 +94,6 @@ void World::drawObjects()
 
 	this->gameWindow.draw(line, 2, sf::Lines);
 	*/
-
-	sf::Image imageBow, imageArrow, imageObj;
-	
-	if (this->loaded == false)
-	{
-		if (!imageBow.loadFromFile("Bow_01.png"))
-			printf("Error: File could not be loaded. :-(\n");
-		this->bowSprite.loadFromImage(imageBow);
-
-		sf::RectangleShape *bowPtr = bow.getHB();
-		bowPtr->setTexture(&bowSprite);
-
-		if (!imageArrow.loadFromFile("Arrow_01.png"))
-			printf("Error: File could not be loaded. :-(\n");
-		this->arrowSprite.loadFromImage(imageArrow);
-
-		sf::RectangleShape *arrowPtr = arrow.getHB();
-		arrowPtr->setTexture(&arrowSprite);
-
-		if (!imageObj.loadFromFile("Object_01.png"))
-			printf("Error: File could not be loaded. :-(\n");
-		this->objSprite.loadFromImage(imageObj);
-
-		this->loaded = true;
-	}
 
 	this->render(*this->bow.getHB());
 
@@ -114,6 +117,49 @@ void World::drawObjects()
 void World::render(sf::Drawable &drawable)
 {
 	this->gameWindow.draw(drawable);
+}
+
+void World::loadTextures(sf::RectangleShape *background)
+{
+	sf::Image imageBow, imageArrow, imageObj, bg1Obj;
+
+	if (this->loaded == false)
+	{
+		if (!imageBow.loadFromFile("Bow_01.png"))
+			printf("Error: File could not be loaded. :-(\n");
+		this->bowSprite.loadFromImage(imageBow);
+
+		sf::RectangleShape *bowPtr = bow.getHB();
+		bowPtr->setTexture(&bowSprite);
+
+		if (!imageArrow.loadFromFile("Arrow_01.png"))
+			printf("Error: File could not be loaded. :-(\n");
+		this->arrowSprite.loadFromImage(imageArrow);
+
+		sf::RectangleShape *arrowPtr = arrow.getHB();
+		arrowPtr->setTexture(&arrowSprite);
+
+		if (!imageObj.loadFromFile("Object_02.png"))
+			printf("Error: File could not be loaded. :-(\n");
+		this->objSprite.loadFromImage(imageObj);
+
+		if (!bg1Obj.loadFromFile("bg.png"))
+			printf("Error: File could not be loaded. :-(\n");
+		this->bg1.loadFromImage(bg1Obj);
+
+		bg1.setRepeated(true);
+
+		sf::Sprite *bg1Ptr = &this->bgRec1;
+		bg1Ptr->setTexture(bg1);
+
+		for (int i = 0; i < this->nrOfObjects; i++)
+		{
+			sf::RectangleShape *objPtr = &this->objectList[i].hitbox;
+			objPtr->setTexture(&objSprite);
+		}
+
+		this->loaded = true;
+	}
 }
 
 void World::trajectoryRot()
@@ -164,14 +210,17 @@ void World::mouseBtn1()
 	}
 }
 
-void World::mouseBtn2()
+void World::mouseBtn2(sf::View *view)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right) == true)
 	{
-		this->arrow.setPos((sf::Vector2f(W_WIDTH * 0.05f, W_HEIGHT * 0.90f)));
+		this->arrow.setPos((sf::Vector2f(54.0f, W_HEIGHT * 0.90f)));
 		this->Button1 = false;
 		this->arrow.firstCalc = true;
 		this->endGame = false;
+
+		view->setCenter(W_WIDTH * 0.5, W_HEIGHT*0.5);
+		gameWindow.setView(*view);
 	}
 }
 
@@ -180,19 +229,13 @@ void World::setTexture(Object object)
 	object.hitbox.setTexture(&objSprite);
 }
 
-void World::addObject(sf::Vector2f pos, sf::Vector2f size) //TODO: Add Texture to obj
+void World::addObject(sf::RectangleShape *HB)
 {
 	Object obj;
-
-	sf::RectangleShape *objPtr = &obj.hitbox;
-
-	obj.pos = sf::Vector2f(W_WIDTH * pos.x, W_HEIGHT * pos.y);
-	obj.hitbox.setSize(size);
-	obj.hitbox.setOrigin(size.x * 0.5f, size.y * 0.5f);
-	obj.hitbox.setPosition(obj.pos);
-	obj.texture = this->objSprite;
-	obj.hitbox.setTexture(&obj.texture);
-
+	
+	obj.pos = HB->getPosition();
+	obj.hitbox = *HB;
+	
 	this->objectList[this->nrOfObjects++] = obj;
 }
 
