@@ -249,6 +249,9 @@ void World::mouseAim(int index)
 
 	//printf("Drawback: %f", drawLength);
 
+	//printf("Drawlength: %f\n", drawLength);
+
+
 	this->arrow.setDir(dir);
 }
 
