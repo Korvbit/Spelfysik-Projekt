@@ -35,7 +35,7 @@ int main()
 
 		sf::View view(sf::Vector2f(W_WIDTH*0.5, W_HEIGHT*0.5), sf::Vector2f(W_WIDTH, W_HEIGHT));
 
-		sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "BowAndVector");
+		sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "Archery Simulator");
 
 		sf::Vector2f BApos = sf::Vector2f(54.0f, W_HEIGHT * 0.90f);
 		sf::RectangleShape arrowHB(sf::Vector2f(11.0f, 54.0f));

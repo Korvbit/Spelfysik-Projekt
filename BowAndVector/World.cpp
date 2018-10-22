@@ -209,7 +209,7 @@ void World::mouseAim(int index)
 	dir.x /= sqrt(pow((a), 2.0) + pow(b, 2.0));
 	dir.y /= sqrt(pow((a), 2.0) + pow(b, 2.0));
 
-	//printf("Dragloingd: %f", drawLength);
+	printf("Drawlength: %f\n", drawLength);
 
 	this->arrow.setDir(dir);
 }
