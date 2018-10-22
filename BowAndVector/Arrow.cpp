@@ -101,12 +101,6 @@ void Arrow::update(float drawWeight, float gravity, float density, float fps, bo
 	if (this->velocity <= 0)
 		this->velocity = 0;
 
-
-
-	//printf("Speed %f\n", this->velocity);
-
-	printf("Velocity %f\n", this->velocity);
-
 	
 }
 

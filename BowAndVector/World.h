@@ -34,16 +34,17 @@ class World
 public:
 	World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape arrowHB, sf::RectangleShape bowHB, sf::RectangleShape objHB, sf::RectangleShape background, info input);
 	virtual ~World();
+
 	void drawObjects(sf::View *view, sf::RectangleShape background);
 	sf::Vector2i mouse;
 	float fps;
+
 	bool Button1;
 	bool collisionCheck(int objIndex_2);
+
 	std::string distance;
 	std::string drawback;
 	std::string speed;
-
-	//<!---TEMP
 
 private:
 	sf::RenderWindow &gameWindow;
