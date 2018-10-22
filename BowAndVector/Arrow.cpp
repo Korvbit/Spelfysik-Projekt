@@ -7,7 +7,7 @@ Arrow::Arrow(sf::Vector2f position, sf::RectangleShape hitbox, float mass, float
 {
 	this->area = 0.0002; //8mm diameter
 	this->dragC = 1.6;
-	this->realTime = 0;
+	this->totalTime = 0;
 	this->mass = mass;
 	this->C = C;
 	this->hitbox = hitbox;
@@ -56,11 +56,14 @@ sf::Vector2f Arrow::getDir()
 void Arrow::update(float drawWeight, float gravity, float density, float fps, bool launch,
 	float Fx, float efficiency, float bowFactor, float bowMass)
 {
-	//<!--- Calculate position: Grab data from Bow and World --->
+	//<--- Calculate position: Grab data from Bow and World --->
 
 	float time = fps;
-	float drawBack = Fx; //<!--- TODO: Make strength an input
+	totalTime += fps;
+	float drawBack = Fx;
 	drawBack = drawBack*drawWeight;
+
+	//printf("drawback %f\n", drawBack);
 
 	if(this->firstCalc)
 	{
@@ -93,12 +96,13 @@ void Arrow::update(float drawWeight, float gravity, float density, float fps, bo
 
 	this->setRot(fmod(alpha, 360));
 
-	this->setPos(this->getPos() + sf::Vector2f(newSpeedX, newSpeedY));
+	this->setPos(this->getPos() + (sf::Vector2f(newSpeedX, newSpeedY)));
 
 	if (this->velocity <= 0)
 		this->velocity = 0;
 
-	//printf("Hästighät %f\n", this->velocity);
+
+	//printf("Speed %f\n", this->velocity);
 	
 }
 

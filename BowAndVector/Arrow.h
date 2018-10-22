@@ -11,6 +11,7 @@ public:
 	sf::Vector2f getPos();
 	sf::RectangleShape* getHB();
 	bool firstCalc;
+	float totalTime;
 
 	void setDir(sf::Vector2f dir);
 	void setRot(float rotation);
@@ -23,9 +24,7 @@ public:
 	void update(float drawWeight, float gravity, float density, float fps, bool launch,
 		float Fx, float efficiency, float bowFactor, float bowMass);
 private:
-	
 
-	float realTime;
 	float area;
 	float v0;
 	float mass;

@@ -37,7 +37,7 @@ int main()
 
 		sf::RenderWindow window(sf::VideoMode(W_WIDTH, W_HEIGHT), "BowAndVector");
 
-		sf::Vector2f BApos = sf::Vector2f(54.0f, W_HEIGHT * 0.90f);
+		sf::Vector2f BApos = sf::Vector2f(54.0f, 648.0f);
 		sf::RectangleShape arrowHB(sf::Vector2f(11.0f, 54.0f));
 		sf::RectangleShape bowHB(sf::Vector2f(54.0f, 54.0f));
 		sf::RectangleShape objHB(sf::Vector2f(54.0f, 54.0f));

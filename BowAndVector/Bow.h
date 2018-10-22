@@ -18,7 +18,7 @@ public:
 	float getBowFactor();
 	float getEfficiency();
 	float getMass();
-	float getKraftigBoge();
+	float getdraw_Back();
 	sf::Vector2f getPos();
 	sf::RectangleShape* getHB();
 
@@ -34,7 +34,7 @@ private:
 
 	sf::RectangleShape hitbox;
 
-	float kraftigBoge;
+	float draw_Back;
 	float bowFactor;
 	float efficiency;
 	float mass;

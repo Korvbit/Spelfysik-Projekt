@@ -21,9 +21,9 @@ float Bow::getMass()
 	return this->mass;
 }
 
-float Bow::getKraftigBoge()
+float Bow::getdraw_Back()
 {
-	return this->kraftigBoge;
+	return this->draw_Back;
 }
 
 sf::Vector2f Bow::getPos()
@@ -38,7 +38,7 @@ sf::RectangleShape* Bow::getHB()
 
 void Bow::setDraw(float drawLength)
 {
-	this->kraftigBoge = drawLength;
+	this->draw_Back = drawLength;
 }
 
 void Bow::setRot(float rotation)
@@ -58,7 +58,7 @@ Bow::Bow(sf::Vector2f pos, sf::RectangleShape hitbox, bowInfo input)
 	this->bowFactor = input.bowFactor;
 	this->efficiency = input.efficiency;
 	this->mass = input.weight;
-	this->kraftigBoge = 0.75f;
+	this->draw_Back = 0.0f;
 	this->setPos(pos);
 	this->drawWeight = input.drawWeight;
 }

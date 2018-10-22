@@ -12,6 +12,7 @@ World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape ar
 	this->repulsion = false;
 	this->endGame = false;
 	this->fps = 0;
+	this->lastSpeed = 0;
 
 	//Set Object variables
 	objHB.setPosition(W_WIDTH * 0.9f, W_HEIGHT * 0.5f);
@@ -25,11 +26,17 @@ World::World(sf::RenderWindow &window, sf::Vector2f BApos, sf::RectangleShape ar
 		this->addObject(&objHB); //(Pos, Size)
 	}
 
+	objHB.setPosition(5040, 648);
+	objHB.setOrigin(objHB.getSize().x * 0.5f, objHB.getSize().y * 0.5f);
+	this->addObject(&objHB); //(Pos, Size)
+
 	sf::Sprite *ptr = &this->bgRec1;
 	bgRec1.setPosition(0, 0);
 	sf::Vector2i *ptr1 = &sf::Vector2i(928*15, (int)W_HEIGHT);
 	sf::Vector2i *ptr2 = &sf::Vector2i(0, 0);
 	ptr->setTextureRect(sf::IntRect(*ptr2, *ptr1));
+
+	this->loadTextures(&background);
 }
 
 World::~World()
@@ -39,8 +46,6 @@ World::~World()
 void World::drawObjects(sf::View *view, sf::RectangleShape background)
 {
 	this->gameWindow.clear();
-
-	this->loadTextures(&background);
 
 	background.setPosition(W_WIDTH*0.5f, W_HEIGHT*0.5f);
 
@@ -52,52 +57,41 @@ void World::drawObjects(sf::View *view, sf::RectangleShape background)
 		{
 			mouseAim(1);
 			mouseBtn1(); // true if button has been pressed
+			
 		}
 		else
 		{
+			draw_speed();
+
 			this->arrow.update(	this->bow.getDraw(), 
 								this->gravity,
 								this->density,
 								this->fps,
 								this->Button1,
-								this->bow.getKraftigBoge(),
+								this->bow.getdraw_Back(),
 								this->bow.getEfficiency(),
 								this->bow.getBowFactor(),
 								this->bow.getMass());
 
+			printf("Velocity: %f m/s\n", this->arrow.getV());
+
 			trajectoryRot();
-
-			if (this->repulsion == true)
-				this->bow.update(this->arrow.getV() / 2, -this->arrow.getDir()); //<!--- TODO: Half speed is not dependant on mass
-
-			if (this->arrow.getPos().x > W_WIDTH*0.49)
-			{
-				float delta = this->arrow.getPos().x - view->getCenter().x;
-				if (delta > 54)
-					delta = 54;
-
-				view->move(delta, 0.0f);
-				gameWindow.setView(*view);
-			}
-
-			/*realSpeed = this->arrow.getV() * 72.0f;
-			printf("Speed: %f m/s\n", realSpeed);*/
 		}
 	}
 
-	mouseBtn2(view); //Resets arrow
+	draw_drawLength();
 
-	sf::Vector2f arrowPos(this->arrow.getPos());
-	//printf("Arrow X: %f, Y: %f\n", arrowPos.x, arrowPos.y);
-		
-	/*sf::Vertex line[] =
+	if (this->arrow.getPos().x > W_WIDTH*0.49)
 	{
-		sf::Vertex(this->arrow.getPos()),
-		sf::Vertex(this->arrow.getPos() + this->arrow.getDir()*(float)100)
-	};
+		float delta = this->arrow.getPos().x - view->getCenter().x;
+		/*if (delta > 54)
+			delta = 54; //spdCap*/
 
-	this->gameWindow.draw(line, 2, sf::Lines);
-	*/
+		view->move(delta, 0.0f);
+		gameWindow.setView(*view);
+	}
+
+	mouseBtn2(view); //Resets simulation
 
 	this->render(*this->bow.getHB());
 
@@ -106,13 +100,21 @@ void World::drawObjects(sf::View *view, sf::RectangleShape background)
 	for (int i = 0; i < this->nrOfObjects; i++)
 	{
 
-		this->render(this->objectList[i].hitbox);  //<!--- TODO: hitbox <= sprite
+		this->render(this->objectList[i].hitbox);
 		if (collisionCheck(i))
 		{
+			draw_lastSpeed();
+
+			if (endGame == false)
+				this->distance = std::to_string((this->arrow.getPos().x - 54.0f) / 72.0f) + "m"; //Conversion factor based on size of arrow
+				this->distance_Text.setString(this->distance);
+				this->distance_Text.setOrigin(this->distance_Text.getGlobalBounds().width*0.5, this->distance_Text.getGlobalBounds().height*0.5);
+				this->distance_Text.setPosition(sf::Vector2f(view->getCenter().x, view->getCenter().y-(0.25*W_HEIGHT)));
+				this->gameWindow.draw(this->distance_Text);
+
 			this->arrow.setV(0);
 			this->endGame = true;
 		}
-
 	}
 
 	this->gameWindow.display();
@@ -121,6 +123,37 @@ void World::drawObjects(sf::View *view, sf::RectangleShape background)
 void World::render(sf::Drawable &drawable)
 {
 	this->gameWindow.draw(drawable);
+}
+
+void World::draw_speed()
+{
+	float v = this->arrow.getV();
+
+	this->speed = std::to_string(this->arrow.getV()) + "m/s"; //Conversion factor based on size of arrow
+	this->lastSpeed = this->arrow.getV();
+	this->speed_Text.setString(this->speed);
+	this->speed_Text.setScale(sf::Vector2f(0.5f, 0.5f));
+	this->speed_Text.setOrigin(this->speed_Text.getGlobalBounds().width*0.25, this->speed_Text.getGlobalBounds().height*0.25);
+	this->speed_Text.setPosition(sf::Vector2f(this->arrow.getPos().x, this->arrow.getPos().y - 54));
+
+	this->gameWindow.draw(this->speed_Text);
+	
+}
+
+void World::draw_lastSpeed()
+{
+	this->speed_Text.setString(std::to_string(this->lastSpeed) + "m/s");
+	this->gameWindow.draw(this->speed_Text);
+}
+
+void World::draw_drawLength()
+{
+	this->drawback = std::to_string(this->bow.getdraw_Back()) + "m"; //Conversion factor based on size of arrow
+	this->drawback_Text.setString(this->drawback);
+	this->drawback_Text.setScale(sf::Vector2f(0.5f, 0.5f));
+	this->drawback_Text.setOrigin(this->drawback_Text.getGlobalBounds().width*0.5, this->drawback_Text.getGlobalBounds().height*0.5);
+	this->drawback_Text.setPosition(sf::Vector2f(54, 621 - (this->drawback_Text.getGlobalBounds().height)*2));
+	this->gameWindow.draw(this->drawback_Text);
 }
 
 void World::loadTextures(sf::RectangleShape *background)
@@ -162,6 +195,13 @@ void World::loadTextures(sf::RectangleShape *background)
 			objPtr->setTexture(&objSprite);
 		}
 
+		if(!this->font.loadFromFile("LemonMilklight.otf"))
+			printf("Error: File could not be loaded. :-(\n");
+
+		this->distance_Text.setFont(this->font);
+		this->drawback_Text.setFont(this->font);
+		this->speed_Text.setFont(this->font);
+
 		this->loaded = true;
 	}
 }
@@ -175,8 +215,6 @@ void World::trajectoryRot()
 	float finalAngle = fmod(mouseAngle, 360);
 
 	this->arrow.setRot(mouseAngle);
-
-	//printf("\n\nRot: %f\n\n", mouseAngle);
 }
 
 void World::mouseAim(int index)
@@ -191,8 +229,6 @@ void World::mouseAim(int index)
 
 	float finalAngle = fmod(mouseAngle, 360);
 
-	//printf("mouseAngle: %f\n", finalAngle);
-
 	this->bow.setRot(finalAngle);
 	this->arrow.setRot(finalAngle);
 	
@@ -201,15 +237,17 @@ void World::mouseAim(int index)
 	sf::Vector2f dir(mouse.x - objPos.x, mouse.y - objPos.y);
 
 	float drawLength = sqrt(dir.x*dir.x + dir.y*dir.y);
-	if (drawLength > W_HEIGHT)
-		drawLength = W_HEIGHT;
-	drawLength /= 360;
+
+	if (drawLength > 648)
+		drawLength = 648;
+
+	drawLength /= 432; //Maximum draw length 1,5m
 	this->bow.setDraw(drawLength);
 
 	dir.x /= sqrt(pow((a), 2.0) + pow(b, 2.0));
 	dir.y /= sqrt(pow((a), 2.0) + pow(b, 2.0));
 
-	//printf("Dragloingd: %f", drawLength);
+	//printf("Drawback: %f", drawLength);
 
 	this->arrow.setDir(dir);
 }
@@ -219,7 +257,6 @@ void World::mouseBtn1()
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) == true)
 	{
 		this->Button1 = true;
-		printf("0");
 	}
 }
 
@@ -230,10 +267,13 @@ void World::mouseBtn2(sf::View *view)
 		this->arrow.setPos((sf::Vector2f(54.0f, W_HEIGHT * 0.90f)));
 		this->Button1 = false;
 		this->arrow.firstCalc = true;
+		this->arrow.totalTime = 0;
 		this->endGame = false;
 
 		view->setCenter(W_WIDTH * 0.5, W_HEIGHT*0.5);
 		gameWindow.setView(*view);
+
+		system("cls");
 	}
 }
 
@@ -260,6 +300,6 @@ bool World::collisionCheck(int objIndex_2)
 	}
 	else
 	{
-		return false; //!intersect
+		return false; //no intersect
 	}
 }
